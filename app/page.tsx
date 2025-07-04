@@ -231,7 +231,8 @@ export default function Home() {
 
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
+          {/* Show skeleton cards based on current drugs count or a reasonable default */}
+          {Array.from({ length: Math.max(drugs.length || 6, 6) }, (_, i) => (
             <Card key={i} className="animate-pulse">
               <CardHeader className="h-24 bg-gray-100"></CardHeader>
               <CardContent className="py-4">
