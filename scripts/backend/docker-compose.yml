@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # SQLite version (default)
+  drug-api-sqlite:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - DATABASE_URL=sqlite:///./data/drug_database.db
+
+  # PostgreSQL version
+  drug-api-postgres:
+    build: .
+    ports:
+      - "8001:8000"
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://druguser:drugpass@postgres:5432/drugdb
+    profiles:
+      - postgres
+
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=druguser
+      - POSTGRES_PASSWORD=drugpass
+      - POSTGRES_DB=drugdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    profiles:
+      - postgres
+
+volumes:
+  postgres_data:
